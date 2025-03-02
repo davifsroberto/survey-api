@@ -1,3 +1,4 @@
+import { Authentication } from '../../../domain/usecases/authentication';
 import { InvalidParamError } from '../../erros';
 import { badRequest } from '../../helpers/http-helper';
 import { EmailValidator, HttpRequest } from '../signup/signup-protocols';
@@ -6,6 +7,7 @@ import { LoginController } from './login';
 interface SutTypes {
   sut: LoginController;
   emailValidatorStub: EmailValidator;
+  authenticationStub: Authentication;
 }
 
 const makeFakeRequest = (): HttpRequest => ({
@@ -27,13 +29,28 @@ const EmailValidator = (): EmailValidator => {
   return new EmailValidatorStub();
 };
 
+const Authentication = (): Authentication => {
+  class AuthenticationStub implements Authentication {
+    async auth(email: string, password: string): Promise<string> {
+      email;
+      password;
+
+      return 'any_token';
+    }
+  }
+
+  return new AuthenticationStub();
+};
+
 const makeSut = (): SutTypes => {
   const emailValidatorStub = EmailValidator();
-  const sut = new LoginController(emailValidatorStub);
+  const authenticationStub = Authentication();
+  const sut = new LoginController(emailValidatorStub, authenticationStub);
 
   return {
     sut,
     emailValidatorStub,
+    authenticationStub,
   };
 };
 
@@ -81,4 +98,26 @@ describe('Login Controller', () => {
 
     expect(isValidSpy).toHaveBeenCalledWith('any_email@mail.com');
   });
+
+  it('Shold call authentication with correct values', async () => {
+    const { sut, authenticationStub } = makeSut();
+    const authSpy = jest.spyOn(authenticationStub, 'auth');
+    await sut.handle(makeFakeRequest());
+
+    expect(authSpy).toHaveBeenCalledWith('any_email@mail.com', 'any_password');
+  });
+
+  /*
+  TODO: Fix this test
+  it('Shold return 401 if invalid credentials are provided', async () => {
+    const { sut, authenticationStub } = makeSut();
+    jest
+      .spyOn(authenticationStub, 'auth')
+      .mockReturnValueOnce(new Promise((resolve) => resolve(null)));
+
+    const httpResponse = await sut.handle(makeFakeRequest());
+
+    expect(httpResponse).toEqual(unauthorized());
+  });
+  */
 });
