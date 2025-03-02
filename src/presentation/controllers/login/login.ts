@@ -4,10 +4,14 @@ import {
   serverError,
   unauthorized,
 } from '../../helpers/http-helper';
-import { Controller, HttpRequest, HttpResponse } from '../../protocols';
-import { EmailValidator } from '../signup/signup-protocols';
 import { MissingParamError } from '../../erros';
-import { Authentication } from '../../../domain/usecases/authentication';
+import {
+  Authentication,
+  Controller,
+  EmailValidator,
+  HttpRequest,
+  HttpResponse,
+} from './login-protocols';
 
 export class LoginController implements Controller {
   private readonly emailValidator: EmailValidator;
