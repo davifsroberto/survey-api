@@ -74,7 +74,7 @@ const makeFakeServerError = (): HttpResponse => {
 };
 
 describe('LogController Decorator', () => {
-  test('Should call controller handle', async () => {
+  it('Should call controller handle', async () => {
     const { sut, controllerStub } = makeSuit();
     const handleSpy = jest.spyOn(controllerStub, 'handle');
 
@@ -83,7 +83,7 @@ describe('LogController Decorator', () => {
     expect(handleSpy).toHaveBeenCalledWith(makeFakeRequest());
   });
 
-  test('Should return the same result of the controller', async () => {
+  it('Should return the same result of the controller', async () => {
     const { sut } = makeSuit();
 
     await sut.handle(makeFakeRequest());
@@ -93,7 +93,7 @@ describe('LogController Decorator', () => {
     expect(httpResponse).toEqual(ok(makeFakeAccount()));
   });
 
-  test('Should call LogErrorRepository with correct error if controller returns a server error', async () => {
+  it('Should call LogErrorRepository with correct error if controller returns a server error', async () => {
     const { sut, controllerStub, logErrorRepositoryStub } = makeSuit();
 
     const logSpy = jest.spyOn(logErrorRepositoryStub, 'logError');
