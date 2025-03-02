@@ -1,15 +1,39 @@
+import { InvalidParamError } from '../../erros';
 import { badRequest } from '../../helpers/http-helper';
+import { EmailValidator, HttpRequest } from '../signup/signup-protocols';
 import { LoginController } from './login';
 
 interface SutTypes {
   sut: LoginController;
+  emailValidatorStub: EmailValidator;
 }
 
+const makeFakeRequest = (): HttpRequest => ({
+  body: {
+    email: 'any_email@mail.com',
+    password: 'any_password',
+  },
+});
+
+const EmailValidator = (): EmailValidator => {
+  class EmailValidatorStub implements EmailValidator {
+    isValid(email: string): boolean {
+      email;
+
+      return true;
+    }
+  }
+
+  return new EmailValidatorStub();
+};
+
 const makeSut = (): SutTypes => {
-  const sut = new LoginController();
+  const emailValidatorStub = EmailValidator();
+  const sut = new LoginController(emailValidatorStub);
 
   return {
     sut,
+    emailValidatorStub,
   };
 };
 
@@ -38,5 +62,23 @@ describe('Login Controller', () => {
     expect(httpResponse).toEqual(
       badRequest(new Error('Missing param: password')),
     );
+  });
+
+  it('Shold return 400 if an invalid email is provided', async () => {
+    const { sut, emailValidatorStub } = makeSut();
+    jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false);
+
+    const httpResponse = await sut.handle(makeFakeRequest());
+
+    expect(httpResponse).toEqual(badRequest(new InvalidParamError('email')));
+  });
+
+  it('Shold call EmailValidator with correct email', async () => {
+    const { sut, emailValidatorStub } = makeSut();
+    const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid');
+
+    await sut.handle(makeFakeRequest());
+
+    expect(isValidSpy).toHaveBeenCalledWith('any_email@mail.com');
   });
 });
