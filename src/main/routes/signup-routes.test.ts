@@ -1,14 +1,11 @@
 import request from 'supertest';
+
 import app from '../config/app';
 import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo-helper';
 
-describe('SignUp Routers', () => {
+describe('Signup Routes', () => {
   beforeAll(async () => {
     await MongoHelper.connect(String(process.env.MONGO_URL));
-  });
-
-  afterAll(async () => {
-    await MongoHelper.disconnect();
   });
 
   beforeEach(async () => {
@@ -17,14 +14,18 @@ describe('SignUp Routers', () => {
     await accountCollection.deleteMany({});
   });
 
+  afterAll(async () => {
+    await MongoHelper.disconnect();
+  });
+
   it('Should return an account on success', async () => {
     await request(app)
       .post('/api/signup')
       .send({
-        name: 'any_name',
-        email: 'any_email@mail.com',
-        password: 'any_password',
-        passwordConfirmation: 'any_password',
+        name: 'Davi Roberto',
+        email: 'davifsroberto@outlook.com',
+        password: '12345',
+        passwordConfirmation: '12345',
       })
       .expect(200);
   });
