@@ -3,8 +3,12 @@ import { Controller, HttpRequest, HttpResponse } from '../../protocols';
 
 export class LoginController implements Controller {
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-    httpRequest;
+    const { email, password } = httpRequest.body;
 
-    return badRequest(new Error('Missing param: email'));
+    if (!email) return badRequest(new Error('Missing param: email'));
+
+    if (!password) return badRequest(new Error('Missing param: password'));
+
+    return new Promise((resolve) => resolve({ statusCode: 200, body: {} }));
   }
 }
