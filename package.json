@@ -1,5 +1,5 @@
 {
-  "name": "api",
+  "name": "survey-api",
   "version": "1.0.0",
   "description": "A Projetc API in NodeJs for studing",
   "private": true,
