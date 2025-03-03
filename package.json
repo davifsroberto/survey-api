@@ -18,6 +18,7 @@
   "scripts": {
     "start": "sucrase-node src/main/server.ts",
     "test": "jest --passWithNoTests --silent --runInBand --noStackTrace",
+    "test:watch": "jest --passWithNoTests --silent --runInBand --noStackTrace --watch",
     "test:verbose": "jest --passWithNoTests  --runInBand",
     "test:unit": "npm run test -- --watch -c jest-unit.config.ts",
     "test:integration": "npm run test -- --watch -c jest-integration.config.ts",
