@@ -5,34 +5,37 @@ import {
 import { HashComparer } from '../../protocols/criptography/hash-compare';
 import { TokenGenerator } from '../../protocols/criptography/token-generator';
 import { LoadAccountByEmailRepository } from '../../protocols/db/load-account-by-email-repository';
-import { AccountModel } from '../add-account/db-add-account-protocols';
+import { UpdateDbAccessTokenRepository } from '../../protocols/db/update-acess-token-repository';
 
 export class DbAuthentication implements Authentication {
   private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository;
   private readonly hashComparer: HashComparer;
   private readonly tokenGenerator: TokenGenerator;
+  private readonly updateDbAccessTokenRepository: UpdateDbAccessTokenRepository;
 
   constructor(
     loadAccountByEmailRepository: LoadAccountByEmailRepository,
     hashComparer: HashComparer,
     tokenGenerator: TokenGenerator,
+    updateDbAccessTokenRepository: UpdateDbAccessTokenRepository,
   ) {
     this.loadAccountByEmailRepository = loadAccountByEmailRepository;
     this.hashComparer = hashComparer;
     this.tokenGenerator = tokenGenerator;
+    this.updateDbAccessTokenRepository = updateDbAccessTokenRepository;
   }
 
   async auth(authentication: AuthenticationModel): Promise<string> {
-    const accountValidated = await this.validateAccount(authentication);
+    const accessToken = await this.validateAccount(authentication);
 
-    if (!accountValidated) return null as unknown as string;
+    if (!accessToken) return null as unknown as string;
 
-    return this.generateAccessToken(accountValidated.id);
+    return accessToken;
   }
 
   private async validateAccount(
     authentication: AuthenticationModel,
-  ): Promise<AccountModel | null> {
+  ): Promise<string | null> {
     const { email: authEmail, password: authPass } = authentication;
 
     const account = await this.loadAccountByEmailRepository.load(authEmail);
@@ -41,10 +44,11 @@ export class DbAuthentication implements Authentication {
     const isValid = await this.hashComparer.compare(authPass, account.password);
     if (!isValid) return null;
 
-    return account;
-  }
+    const accessToken = await this.tokenGenerator.generate(account.id);
+    if (!accessToken) return null;
 
-  private async generateAccessToken(accountId: string): Promise<string> {
-    return this.tokenGenerator.generate(accountId);
+    await this.updateDbAccessTokenRepository.update(account.id, accessToken);
+
+    return accessToken;
   }
 }
