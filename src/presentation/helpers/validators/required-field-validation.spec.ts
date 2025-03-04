@@ -8,8 +8,15 @@ describe('RequiredField Validation', () => {
 
   it('Shold return a MissingParamError if validation fails', () => {
     const sut = makeSut();
-    const error = sut.validate({ invalidField: 'any_value' });
+    const error = sut.validate({});
 
     expect(error).toEqual(new MissingParamError('field'));
+  });
+
+  it('Shold return null if validation success', () => {
+    const sut = makeSut();
+    const error = sut.validate({ field: 'any_value' });
+
+    expect(error).toBeNull();
   });
 });
