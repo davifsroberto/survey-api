@@ -16,9 +16,7 @@ interface SuitTypes {
 
 const makeController = (): Controller => {
   class ControllerStub implements Controller {
-    async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-      httpRequest;
-
+    async handle(_httpRequest: HttpRequest): Promise<HttpResponse> {
       return new Promise((resolve) => resolve(ok(makeFakeAccount())));
     }
   }
@@ -27,9 +25,7 @@ const makeController = (): Controller => {
 
 const makeLogErrorRepository = (): LogErrorRepository => {
   class LogErrorRepositoryStub implements LogErrorRepository {
-    async logError(stack: string): Promise<void> {
-      stack;
-
+    async logError(_stack: string): Promise<void> {
       return new Promise((resolve) => resolve());
     }
   }

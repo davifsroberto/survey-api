@@ -22,9 +22,7 @@ const makeFakeRequest = (): HttpRequest => ({
 
 const Authentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth(authentication: AuthenticationModel): Promise<string> {
-      authentication;
-
+    async auth(_authentication: AuthenticationModel): Promise<string> {
       return 'any_token';
     }
   }
@@ -35,8 +33,7 @@ const Authentication = (): Authentication => {
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    validate(input: any): Error {
-      input;
+    validate(_input: any): Error {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let error: any;
 

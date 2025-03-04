@@ -4,6 +4,5 @@ export interface AuthenticationModel {
 }
 
 export interface Authentication {
-  // eslint-disable-next-line no-unused-vars
-  auth(authentication: AuthenticationModel): Promise<string>;
+  auth(_authentication: AuthenticationModel): Promise<string>;
 }

@@ -32,9 +32,7 @@ const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub
     implements LoadAccountByEmailRepository
   {
-    async load(email: string): Promise<AccountModel> {
-      email;
-
+    async load(_email: string): Promise<AccountModel> {
       return new Promise((resolve) => resolve(makeFakeAccount()));
     }
   }
@@ -44,10 +42,7 @@ const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
 
 const makeHashComparer = (): HashComparer => {
   class HashComparerStub implements HashComparer {
-    async compare(value: string, hash: string): Promise<boolean> {
-      value;
-      hash;
-
+    async compare(_value: string, _hash: string): Promise<boolean> {
       return new Promise((resolve) => resolve(true));
     }
   }
@@ -57,9 +52,7 @@ const makeHashComparer = (): HashComparer => {
 
 const makeEncrypter = (): Encrypter => {
   class EncrypterStub implements Encrypter {
-    async encrypt(id: string): Promise<string> {
-      id;
-
+    async encrypt(_id: string): Promise<string> {
       return new Promise((resolve) => resolve('any_token'));
     }
   }
@@ -71,10 +64,7 @@ const makeUpdateAccessTokenRepository = (): UpdateDbAccessTokenRepository => {
   class UpdateAccessTokenRepositoryStub
     implements UpdateDbAccessTokenRepository
   {
-    async update(id: string, token: string): Promise<void> {
-      id;
-      token;
-
+    async update(_id: string, _token: string): Promise<void> {
       return new Promise((resolve) => resolve());
     }
   }

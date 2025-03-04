@@ -1,4 +1,3 @@
 export interface Hasher {
-  // eslint-disable-next-line no-unused-vars
-  hash(value: string): Promise<string>;
+  hash(_value: string): Promise<string>;
 }
