@@ -105,7 +105,6 @@ it('Should return 200 if valid data is provided', async () => {
 it('Should call Validation with correct value', async () => {
   const { sut, validationStub } = makeSut();
   const validateSpy = jest.spyOn(validationStub, 'validate');
-
   const httpRequest = makeFakeRequest();
 
   await sut.handle(httpRequest);
