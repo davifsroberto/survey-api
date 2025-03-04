@@ -34,8 +34,8 @@ export class DbAuthentication implements Authentication {
 
     if (!hashComparer) return null as unknown as string;
 
-    const token = await this.tokenGenerator.generate(account.id);
+    const accessToken = await this.tokenGenerator.generate(account.id);
 
-    return token;
+    return accessToken;
   }
 }
