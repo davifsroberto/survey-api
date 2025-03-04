@@ -7,8 +7,7 @@ export class ValidationComposite implements Validation {
     this.validations = validations;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  validate(input: any): Error {
+  validate<T>(input: T): Error {
     for (const validation of this.validations) {
       const error = validation.validate(input);
 

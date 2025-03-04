@@ -32,8 +32,7 @@ const Authentication = (): Authentication => {
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    validate(_input: any): Error {
+    validate<T>(_input: T): Error {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let error: any;
 

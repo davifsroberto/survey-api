@@ -11,8 +11,7 @@ export class EmailValidation implements Validation {
     this.emailValidator = emailValidator;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  validate(input: any): Error {
+  validate<T>(input: T): Error {
     const isEmailValid = this.emailValidator.isValid(input[this.fieldName]);
 
     if (!isEmailValid) return new InvalidParamError(this.fieldName);
