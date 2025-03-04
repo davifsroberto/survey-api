@@ -1,7 +1,11 @@
 import { ok, unauthorized } from '../../helpers/http/http-helper';
 import { Validation } from '../signup/signup-protocols';
 import { LoginController } from './login';
-import { Authentication, HttpRequest } from './login-protocols';
+import {
+  Authentication,
+  AuthenticationModel,
+  HttpRequest,
+} from './login-protocols';
 
 interface SutTypes {
   sut: LoginController;
@@ -18,9 +22,8 @@ const makeFakeRequest = (): HttpRequest => ({
 
 const Authentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth(email: string, password: string): Promise<string> {
-      email;
-      password;
+    async auth(authentication: AuthenticationModel): Promise<string> {
+      authentication;
 
       return 'any_token';
     }
@@ -62,7 +65,10 @@ describe('Login Controller', () => {
     const authSpy = jest.spyOn(authenticationStub, 'auth');
     await sut.handle(makeFakeRequest());
 
-    expect(authSpy).toHaveBeenCalledWith('any_email@mail.com', 'any_password');
+    expect(authSpy).toHaveBeenCalledWith({
+      email: 'any_email@mail.com',
+      password: 'any_password',
+    });
   });
 
   it('Shold return 401 if invalid credentials are provided', async () => {
