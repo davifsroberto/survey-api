@@ -10,8 +10,7 @@ export class CompareFieldsValidation implements Validation {
     this.fieldNameToCompare = fieldNameToCompare;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  validate(input: any): Error {
+  validate<T>(input: T): Error {
     if (input[this.fieldName] !== input[this.fieldNameToCompare]) {
       return new InvalidParamError(this.fieldNameToCompare);
     }

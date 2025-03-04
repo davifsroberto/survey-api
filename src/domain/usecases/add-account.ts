@@ -7,6 +7,5 @@ export interface AddAccountModel {
 }
 
 export interface AddAccount {
-  // eslint-disable-next-line no-unused-vars
-  add(account: AddAccountModel): Promise<AccountModel>;
+  add(_account: AddAccountModel): Promise<AccountModel>;
 }

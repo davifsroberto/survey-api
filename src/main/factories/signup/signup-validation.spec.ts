@@ -12,9 +12,7 @@ jest.mock('../../../presentation/helpers/validators/validation-composite');
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
-    isValid(email: string): boolean {
-      email;
-
+    isValid(_email: string): boolean {
       return true;
     }
   }

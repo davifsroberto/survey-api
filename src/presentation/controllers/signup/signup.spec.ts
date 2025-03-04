@@ -17,9 +17,7 @@ interface SutTypes {
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
-    async add(account: AddAccountModel): Promise<AccountModel> {
-      account;
-
+    async add(_account: AddAccountModel): Promise<AccountModel> {
       return new Promise((resolve) => resolve(makeFakeAccount()));
     }
   }
@@ -29,9 +27,7 @@ const makeAddAccount = (): AddAccount => {
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    validate(input: any): Error {
-      input;
+    validate<T>(_input: T): Error {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let error: any;
 

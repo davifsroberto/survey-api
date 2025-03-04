@@ -37,9 +37,7 @@ const makeFakeAccount = (): AccountModel => ({
 
 const makeaddAccountRepository = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {
-    async add(accountData: AddAccountModel): Promise<AccountModel> {
-      accountData;
-
+    async add(_accountData: AddAccountModel): Promise<AccountModel> {
       return new Promise((resolve) => resolve(makeFakeAccount()));
     }
   }
