@@ -1,6 +1,7 @@
 import { AccountModel } from '../../../domain/models/account';
 import { AuthenticationModel } from '../../../domain/usecases/authentication';
 import { HashComparer } from '../../protocols/criptography/hash-compare';
+import { TokenGenerator } from '../../protocols/criptography/token-generator';
 import { LoadAccountByEmailRepository } from '../../protocols/db/load-account-by-email-repository';
 import { DbAuthentication } from './db-authentication';
 
@@ -8,6 +9,7 @@ interface SutTypes {
   sut: DbAuthentication;
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository;
   hashComparerStub: HashComparer;
+  tokenGeneratorStub: TokenGenerator;
 }
 
 const makeFakeAccount = (): AccountModel => ({
@@ -49,18 +51,33 @@ const makeHashComparer = (): HashComparer => {
   return new HashComparerStub();
 };
 
+const makeTokenGenerator = (): TokenGenerator => {
+  class TokenGeneratorStub implements TokenGenerator {
+    async generate(id: string): Promise<string> {
+      id;
+
+      return new Promise((resolve) => resolve('any_token'));
+    }
+  }
+
+  return new TokenGeneratorStub();
+};
+
 const makeSut = (): SutTypes => {
   const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository();
   const hashComparerStub = makeHashComparer();
+  const tokenGeneratorStub = makeTokenGenerator();
   const sut = new DbAuthentication(
     loadAccountByEmailRepositoryStub,
     hashComparerStub,
+    tokenGeneratorStub,
   );
 
   return {
     sut,
     loadAccountByEmailRepositoryStub,
     hashComparerStub,
+    tokenGeneratorStub,
   };
 };
 
@@ -121,5 +138,14 @@ describe('DBAuthentication UseCase', () => {
     const accessToken = await sut.auth(makeFakeAuthentication());
 
     expect(accessToken).toBeNull();
+  });
+
+  it('Should call TokenGenerator with correct id', async () => {
+    const { sut, tokenGeneratorStub } = makeSut();
+    const generateSpy = jest.spyOn(tokenGeneratorStub, 'generate');
+
+    await sut.auth(makeFakeAuthentication());
+
+    expect(generateSpy).toHaveBeenCalledWith('any_id');
   });
 });
