@@ -24,4 +24,27 @@ describe('JWT Adapter', () => {
 
     expect(accessToken).toBe('any_token');
   });
+
+  it('Should throw if sign throws', async () => {
+    const sut = new JwtAdapter('secret');
+
+    jest.spyOn(jwt, 'sign').mockImplementationOnce(() => {
+      throw new Error();
+    });
+    await expect(sut.encrypt('any_id')).rejects.toThrow();
+
+    expect(jwt.sign).toHaveBeenCalledWith({ id: 'any_id' }, 'secret');
+  });
+
+  it('Shold throw if verify throws', async () => {
+    const sut = new JwtAdapter('secret');
+
+    jest.spyOn(jwt, 'sign').mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const promise = sut.decrypt('any_id');
+
+    await expect(promise).rejects.toThrow();
+  });
 });
