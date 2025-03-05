@@ -38,7 +38,8 @@ export class DbAuthentication implements Authentication {
   ): Promise<string | null> {
     const { email: authEmail, password: authPass } = authentication;
 
-    const account = await this.loadAccountByEmailRepository.load(authEmail);
+    const account =
+      await this.loadAccountByEmailRepository.loadByEmail(authEmail);
     if (!account) return null;
 
     const isValid = await this.hashComparer.compare(authPass, account.password);
@@ -47,7 +48,10 @@ export class DbAuthentication implements Authentication {
     const accessToken = await this.encrypter.encrypt(account.id);
     if (!accessToken) return null;
 
-    await this.updateDbAccessTokenRepository.update(account.id, accessToken);
+    await this.updateDbAccessTokenRepository.updateAccessToken(
+      account.id,
+      accessToken,
+    );
 
     return accessToken;
   }
