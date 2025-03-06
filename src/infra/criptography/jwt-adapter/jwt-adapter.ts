@@ -2,11 +2,7 @@ import jwt from 'jsonwebtoken';
 import { Encrypter } from '../../../data/protocols/criptography/encrypter';
 
 export class JwtAdapter implements Encrypter, Encrypter {
-  private readonly secret: string;
-
-  constructor(secret: string) {
-    this.secret = secret;
-  }
+  constructor(private readonly secret: string) {}
 
   async encrypt(value: string): Promise<string> {
     const token = jwt.sign({ id: value }, this.secret);
@@ -17,6 +13,6 @@ export class JwtAdapter implements Encrypter, Encrypter {
   async decrypt(token: string): Promise<string> {
     const value = jwt.verify(token, this.secret);
 
-    return value as string;
+    return String(value);
   }
 }
