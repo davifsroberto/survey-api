@@ -30,7 +30,7 @@
       "error",
       { "allowShortCircuit": true }
     ],
-    "no-empty-function": "error",
+    "no-empty-function": ["error", { "allow": ["constructors"] }],
     "@typescript-eslint/explicit-function-return-type": [
       "error",
       {
