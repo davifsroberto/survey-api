@@ -2,14 +2,14 @@ import { ok, unauthorized } from '../../helpers/http/http-helper';
 import { Validation } from '../signup/signup-controller-protocols';
 import { LoginController } from './login-controller';
 import {
-  Authentication,
+  Authentication as makeAuthentication,
   AuthenticationModel,
   HttpRequest,
 } from './login-controller-protocols';
 
 interface SutTypes {
   sut: LoginController;
-  authenticationStub: Authentication;
+  authenticationStub: makeAuthentication;
   validationStub: Validation;
 }
 
@@ -20,8 +20,8 @@ const makeFakeRequest = (): HttpRequest => ({
   },
 });
 
-const Authentication = (): Authentication => {
-  class AuthenticationStub implements Authentication {
+const makeAuthentication = (): makeAuthentication => {
+  class AuthenticationStub implements makeAuthentication {
     async auth(_authentication: AuthenticationModel): Promise<string> {
       return 'any_token';
     }
@@ -44,7 +44,7 @@ const makeValidation = (): Validation => {
 };
 
 const makeSut = (): SutTypes => {
-  const authenticationStub = Authentication();
+  const authenticationStub = makeAuthentication();
   const validationStub = makeValidation();
   const sut = new LoginController(validationStub, authenticationStub);
 
