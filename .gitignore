@@ -1,5 +1,8 @@
 node_modules
-.vscode
-.dist
+dist
 coverage
-documentation
+data
+!src/data
+!tests/data
+.vscode
+globalConfig.json
