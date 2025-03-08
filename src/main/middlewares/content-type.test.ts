@@ -1,4 +1,5 @@
 import request from 'supertest';
+
 import app from '../config/app';
 
 describe('Content Type Middleware', () => {
