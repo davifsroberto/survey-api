@@ -1,4 +1,4 @@
-import { InvalidParamError } from '../../erros';
+import { InvalidParamError } from '../../presentation/erros';
 import { CompareFieldsValidation } from './compare-fields-validators';
 
 describe('CompareFields Validation', () => {

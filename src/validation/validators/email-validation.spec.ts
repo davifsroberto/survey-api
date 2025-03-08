@@ -1,5 +1,5 @@
-import { InvalidParamError } from '../../erros';
-import { EmailValidator } from '../../protocols/email-validator';
+import { InvalidParamError } from '../../presentation/erros';
+import { EmailValidator } from '../potocols/email-validator';
 import { EmailValidation } from './email-validation';
 
 interface SutTypes {
