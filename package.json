@@ -1,6 +1,6 @@
 {
   "name": "survey-api",
-  "version": "1.1.0",
+  "version": "1.2.3",
   "description": "A Projetc API in NodeJs for studing",
   "private": true,
   "license": "ISC",
